@@ -32,4 +32,6 @@
     <update id="updateById" >
         update user_tb set username= #{username},password= #{password}, email= #{email} where id = #{id} 
     </update>    
+
+    
 </mapper>

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface UserRepository {
+
         public List<User> findAll();
 
         public User findById(int id);
@@ -19,4 +20,10 @@ public interface UserRepository {
                         @Param("email") String email);
 
         public int deleteById(int id);
+
+        
+
+        public User findByUser(String username);
+
+        public User findByUsernameAndPassword(@Param("username")String username,@Param("password") String password);
 }
