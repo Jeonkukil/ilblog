@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import shop.mtcoding.ilblog.dto.board.BoardResp.BoardDetailRespDto;
 import shop.mtcoding.ilblog.dto.board.BoardResp.BoardMainRespDto;
 
 @Mapper
@@ -28,4 +29,6 @@ public interface BoardRepository {
                         @Param("content") String content);
 
         public int deleteById(int id);
+
+        public BoardDetailRespDto findByIdWithUser(int id);
 }
