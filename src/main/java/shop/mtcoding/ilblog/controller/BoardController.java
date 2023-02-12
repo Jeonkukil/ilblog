@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +36,8 @@ public class BoardController {
 
 
     @GetMapping({ "/", "/board" })
-    public String maain() {
+    public String maain(Model model) {
+        model.addAttribute("dtos", boardRepository.findAllWithUser());
         return "board/main";
     }
 
@@ -60,8 +62,6 @@ public class BoardController {
         if (BoardSaveReqDto.getTitle().length() > 100) {
             throw new CustomApiException("title의 길이가 100자 이하여야 합니다");
         }
-
-
         
        boardService.글쓰기(BoardSaveReqDto, principal.getId());
 
