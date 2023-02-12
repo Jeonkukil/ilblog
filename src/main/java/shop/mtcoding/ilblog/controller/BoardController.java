@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import shop.mtcoding.ilblog.dto.ResponseDto;
 import shop.mtcoding.ilblog.dto.board.BoardReq.BoardSaveReqDto;
 import shop.mtcoding.ilblog.handler.ex.CustomApiException;
+import shop.mtcoding.ilblog.handler.ex.CustomException;
+import shop.mtcoding.ilblog.model.Board;
 import shop.mtcoding.ilblog.model.BoardRepository;
 import shop.mtcoding.ilblog.model.User;
 import shop.mtcoding.ilblog.service.BoardService;
@@ -72,5 +74,22 @@ public class BoardController {
     @GetMapping("/board/saveForm")
     public String saveForm() {
         return "board/saveForm";
+    }
+
+    @GetMapping("/board/{id}/updateForm")
+    public String updateForm(@PathVariable int id, Model model){
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomException("인증이 되지 않았습니다.", HttpStatus.UNAUTHORIZED);            
+        }
+        Board boardPS = boardRepository.findById(id);
+        if (boardPS == null) {
+            throw new CustomException("없는 게시글을 수정할 수 없습니다.");            
+        }
+        if(boardPS.getUserId() != principal.getId()){
+            throw new CustomException("게시글을 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+        model.addAttribute("board", boardPS);
+        return "board/updateForm";
     }
 }
